@@ -1,6 +1,10 @@
 /// <reference types="cypress" />
 describe('page', () => {
-  it('works', () => {
-    cy.visit('https://example.cypress.io')
+  it('this should fail', () => {
+    cy.get('.thisdoesnotexist')
+  })
+  it('this should also fail', () => {
+    cy.on('fail', () => {})
+    cy.get('.thisdoesnotexist')
   })
 })
