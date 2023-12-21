@@ -1,8 +1,6 @@
 /// <reference types="cypress" />
 describe('page', () => {
     it('works', () => {
-        const makeRequest = true;
-
         cy.intercept(
             {
                 method: "POST",
@@ -14,14 +12,12 @@ describe('page', () => {
         )
 
         const click = () => {
-            if (makeRequest) {
-                fetch(
-                    "/test",
-                    {
-                        method: "POST",
-                        body: '{ "name": "foo" }',
-                    });
-            }
+            fetch(
+                "/test",
+                {
+                    method: "POST",
+                    body: '{ "name": "foo" }',
+                });
         };
 
         cy.get('body').then((body) => {
@@ -35,5 +31,6 @@ describe('page', () => {
         cy.get('#test-button').click()
 
         cy.wait("@foo").should("exist");
+        cy.get("@bar").should("not.exist");
     })
 })
