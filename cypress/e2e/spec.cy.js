@@ -6,18 +6,20 @@ describe('page', () => {
         cy.intercept(
             {
                 method: "POST",
-                url: "/route",
+                url: "/test",
             },
-            cy.spy().as("request")
-        ).as("intercept");
+            (request) => {
+                request.alias = JSON.parse(request.body).name
+            }
+        )
 
         const click = () => {
             if (makeRequest) {
                 fetch(
-                    "/route",
+                    "/test",
                     {
                         method: "POST",
-                        body: "{'a': 1}",
+                        body: '{ "name": "foo" }',
                     });
             }
         };
@@ -32,7 +34,6 @@ describe('page', () => {
 
         cy.get('#test-button').click()
 
-        // cy.get("@request").should("have.been.called");
-        cy.get("@request", { timeout: 0 }).should("not.have.been.called");
+        cy.wait("@foo").should("exist");
     })
 })
